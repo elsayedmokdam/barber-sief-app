@@ -127,6 +127,8 @@ export function BookingForm() {
               type="tel"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
+              pattern="^01[0125][0-9]{8}$"
+              title="يرجى ادخال رقم هاتف صحيح"
               className="w-full text-gray-900 px-4 py-3 bg-input-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary transition-all"
               placeholder="01xxxxxxxxx"
               required
