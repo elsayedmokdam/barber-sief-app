@@ -24,6 +24,7 @@ interface BarberContextType {
 }
 
 export const BarberContext = createContext({} as BarberContextType);
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const DEFAULT_SERVICES: Service[] = [
   { id: "1", nameAr: "حلاقة شعر", price: 50, durationMinutes: 30 },
@@ -47,10 +48,10 @@ export function BarberContextProvider({ children }: { children: ReactNode }) {
     async function loadData() {
       try {
         const [servicesResponse, bookingsResponse, shopResponse, ownerResponse] = await Promise.all([
-          fetch("/api/services"),
-          fetch("/api/bookings"),
-          fetch("/api/shop-status"),
-          fetch("/api/owner-status"),
+          fetch(`${baseUrl}/api/services`),
+          fetch(`${baseUrl}/api/bookings`),
+          fetch(`${baseUrl}/api/shop-status`),
+          fetch(`${baseUrl}/api/owner-status`),
         ]);
 
         if (!servicesResponse.ok) {
@@ -90,7 +91,7 @@ export function BarberContextProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const addService = async (service: Omit<Service, "id">) => {
-    const response = await fetch("/api/services", {
+    const response = await fetch(`${baseUrl}/api/services`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(service),
@@ -108,7 +109,7 @@ export function BarberContextProvider({ children }: { children: ReactNode }) {
     id: string,
     updatedService: Partial<Service>,
   ) => {
-    const response = await fetch(`/api/services/${id}`, {
+    const response = await fetch(`${baseUrl}/api/services/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedService),
@@ -123,7 +124,7 @@ export function BarberContextProvider({ children }: { children: ReactNode }) {
   };
 
   const deleteService = async (id: string) => {
-    const response = await fetch(`/api/services/${id}`, {
+    const response = await fetch(`${baseUrl}/api/services/${id}`, {
       method: "DELETE",
     });
 
@@ -135,7 +136,7 @@ export function BarberContextProvider({ children }: { children: ReactNode }) {
   };
 
   const addBooking = async (booking: Omit<Booking, "id" | "createdAt">) => {
-    const response = await fetch("/api/bookings", {
+    const response = await fetch(`${baseUrl}/api/bookings`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(booking),
@@ -150,7 +151,7 @@ export function BarberContextProvider({ children }: { children: ReactNode }) {
   };
 
   const deleteBooking = async (id: string) => {
-    const response = await fetch(`/api/bookings/${id}`, {
+    const response = await fetch(`${baseUrl}/api/bookings/${id}`, {
       method: "DELETE",
     });
 
@@ -162,7 +163,7 @@ export function BarberContextProvider({ children }: { children: ReactNode }) {
   };
 
   const updateShopStatus = async (isOpen: boolean) => {
-    const response = await fetch("/api/shop-status", {
+    const response = await fetch(`${baseUrl}/api/shop-status`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ isOpen }),
@@ -177,7 +178,7 @@ export function BarberContextProvider({ children }: { children: ReactNode }) {
   };
 
   const setIsOwner = async (owner: boolean) => {
-    const response = await fetch("/api/owner-status", {
+    const response = await fetch(`${baseUrl}/api/owner-status`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ isOwner: owner }),

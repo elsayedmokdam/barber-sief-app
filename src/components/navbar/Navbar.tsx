@@ -7,7 +7,7 @@ import { useBarber } from "@/app/_context/BarberContextProvider";
 
 export default function Navbar() {
     const { shopStatus, isOwner, setIsOwner } = useBarber();
-    const OWNER_PASSWORD = process.env.NEXT_PUBLIC_OWNER_PASSWORD ?? "owner123";
+    const OWNER_PASSWORD = "owner123";
 
     const handleOwnerAccess = async () => {
       try {

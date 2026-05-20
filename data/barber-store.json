@@ -61,6 +61,54 @@
       "totalCost": 80,
       "id": "1779317961957",
       "createdAt": 1779317961957
+    },
+    {
+      "customerName": "السيد",
+      "phoneNumber": "01023789777",
+      "date": "2026-05-21",
+      "timeSlot": "20:00",
+      "services": [
+        {
+          "id": "2",
+          "nameAr": "حلاقة ذقن",
+          "price": 30,
+          "durationMinutes": 15
+        },
+        {
+          "id": "1",
+          "nameAr": "حلاقة شعر",
+          "price": 50,
+          "durationMinutes": 30
+        }
+      ],
+      "additionalNotes": "",
+      "totalCost": 80,
+      "id": "1779319419405",
+      "createdAt": 1779319419405
+    },
+    {
+      "customerName": "أحمد",
+      "phoneNumber": "01238484888",
+      "date": "2026-05-29",
+      "timeSlot": "09:00",
+      "services": [
+        {
+          "id": "1",
+          "nameAr": "حلاقة شعر",
+          "price": 50,
+          "durationMinutes": 30
+        },
+        {
+          "id": "3",
+          "nameAr": "حلاقة شعر وذقن",
+          "price": 70,
+          "durationMinutes": 45
+        }
+      ],
+      "additionalNotes": "",
+      "totalCost": 120,
+      "id": "1779319440594",
+      "createdAt": 1779319440594
     }
   ],
   "isOwner": false,
