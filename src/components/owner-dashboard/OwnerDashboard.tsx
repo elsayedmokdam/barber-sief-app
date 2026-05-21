@@ -369,10 +369,6 @@ export function OwnerDashboard() {
                 <div className="flex flex-col md:flex-row md:items-center gap-4">
                   {/* Service Info */}
                   <div className="flex flex-1 items-center gap-4">
-                    {/* Icon */}
-                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary shadow-sm">
-                      ✂️
-                    </div>
 
                     {/* Details */}
                     <div>
