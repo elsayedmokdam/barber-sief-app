@@ -7,9 +7,8 @@ import { Booking } from "@/types";
 import { Invoice } from "../invoice/Invoice";
 import BookingCard from "../booking-card/BookingCard";
 
-
 export function BookingsList() {
-  const { bookings, deleteBooking, isOwner } = useBarber();
+  const { bookings, deleteBooking } = useBarber();
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
 
   const sortedBookings = [...bookings].sort((a, b) => {
@@ -30,7 +29,6 @@ export function BookingsList() {
     (b) => b.date > format(new Date(), "yyyy-MM-dd"),
   );
 
-
   return (
     <>
       <div className="space-y-6">
@@ -43,7 +41,13 @@ export function BookingsList() {
             <h2 className="mb-4">حجوزات اليوم ({todayBookings.length})</h2>
             <div className="space-y-3">
               {todayBookings.map((booking, index) => (
-                <BookingCard key={booking.id} booking={booking} index={index} setSelectedBooking={setSelectedBooking} deleteBooking={deleteBooking}/>
+                <BookingCard
+                  key={booking.id}
+                  booking={booking}
+                  index={index}
+                  setSelectedBooking={setSelectedBooking}
+                  deleteBooking={deleteBooking}
+                />
               ))}
             </div>
           </motion.div>
@@ -61,7 +65,13 @@ export function BookingsList() {
             </h2>
             <div className="space-y-3">
               {upcomingBookings.map((booking, index) => (
-                <BookingCard key={booking.id} booking={booking} index={index} setSelectedBooking={setSelectedBooking} deleteBooking={deleteBooking}/>
+                <BookingCard
+                  key={booking.id}
+                  booking={booking}
+                  index={index}
+                  setSelectedBooking={setSelectedBooking}
+                  deleteBooking={deleteBooking}
+                />
               ))}
             </div>
           </motion.div>

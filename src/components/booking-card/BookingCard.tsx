@@ -16,7 +16,7 @@ export default function BookingCard({
   deleteBooking?: (id: string) => void;
   setSelectedBooking: (booking: Booking | null) => void;
 }) {
-  const {isOwner} = useBarber();
+  const { isOwner } = useBarber();
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}

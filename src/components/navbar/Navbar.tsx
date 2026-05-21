@@ -6,27 +6,27 @@ import { ThemeToggle } from "../theme-toggle/ThemeToggle";
 import { useBarber } from "@/app/_context/BarberContextProvider";
 
 export default function Navbar() {
-    const { shopStatus, isOwner, setIsOwner } = useBarber();
-    const OWNER_PASSWORD = "owner123";
+  const { shopStatus, isOwner, setIsOwner } = useBarber();
+  const OWNER_PASSWORD = "owner123";
 
-    const handleOwnerAccess = async () => {
-      try {
-        if (isOwner) {
-          await setIsOwner(false);
-          return;
-        }
-
-        const password = window.prompt("أدخل كلمة المرور:");
-        if (password === OWNER_PASSWORD) {
-          await setIsOwner(true);
-        } else {
-          window.alert("كلمة المرور غير صحيحة.");
-        }
-      } catch (error) {
-        console.error(error); 
-        window.alert("تعذر تحديث حالة المالك. حاول مرة أخرى.");
+  const handleOwnerAccess = async () => {
+    try {
+      if (isOwner) {
+        await setIsOwner(false);
+        return;
       }
-    };
+
+      const password = window.prompt("أدخل كلمة المرور:");
+      if (password === OWNER_PASSWORD) {
+        await setIsOwner(true);
+      } else {
+        window.alert("كلمة المرور غير صحيحة.");
+      }
+    } catch (error) {
+      console.error(error);
+      window.alert("تعذر تحديث حالة المالك. حاول مرة أخرى.");
+    }
+  };
 
   return (
     <nav className="sticky top-0 z-40 bg-card/80 backdrop-blur-lg border-b border-border shadow-sm">

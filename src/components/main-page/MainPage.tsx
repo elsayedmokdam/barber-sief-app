@@ -17,7 +17,7 @@ export default function MainPage({ isOwner }: { isOwner: boolean }) {
           <div className="mt-8">
             {/* Search for Your Bookings */}
             <div className="mb-5">
-              <BookingSearchInput isOwner />
+              <BookingSearchInput />
             </div>
             <div
               className={`flex-1 py-3 mb-5 text-center rounded-xl font-medium transition-all duration-300 bg-card text-card-foreground hover:shadow-lg hover:scale-102 hover:bg-accent/40! hover:text-accent-foreground! shadow-lg`}
@@ -37,7 +37,7 @@ export default function MainPage({ isOwner }: { isOwner: boolean }) {
           <div className="lg:col-span-2">
             {/* Search for Your Bookings */}
             <div className="mb-5">
-              <BookingSearchInput isOwner />
+              <BookingSearchInput />
             </div>
             <div
               className={`flex-1 py-3 mb-5 text-center rounded-xl font-medium transition-all duration-300 bg-card text-card-foreground hover:shadow-lg hover:scale-102 hover:bg-accent/40! hover:text-accent-foreground! shadow-lg`}
