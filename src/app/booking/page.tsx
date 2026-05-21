@@ -9,16 +9,17 @@ export default function BookingPage() {
       {/* Background Glow */}
       <div className="absolute top-0 left-0 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
       <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
-      
-      <Link
-        href="/"
-        className="absolute top-5 left-30 md:top-13 md:left-4 flex items-center gap-2 text-gray-900 dark:text-white hover:text-primary/80 transition-all duration-300"
-      >
-        <span>الرجوع إلي الرئيسية</span>
-        <span>
-          <FaArrowLeft />
-        </span>
-      </Link>
+
+      {/* Back Button */}
+      <div className="mb-10 flex justify-center md:justify-end">
+        <Link
+          href="/"
+          className="group inline-flex items-center gap-3 rounded-2xl border border-border/60 bg-card/60 px-5 py-3 text-sm font-medium backdrop-blur-md transition-all duration-300 hover:border-primary/40 hover:bg-primary/10 hover:text-primary hover:shadow-lg"
+        >
+          <span>الرجوع إلى الرئيسية</span>
+          <FaArrowLeft className="transition-transform duration-300 group-hover:translate-x-1" />
+        </Link>
+      </div>
       {/* Heading */}
       <div className="mb-12 text-center">
         <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-2 text-sm text-primary">

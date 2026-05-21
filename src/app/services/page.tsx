@@ -6,23 +6,26 @@ import { FaArrowLeft, FaIcons } from "react-icons/fa6";
 import { useBarber } from "../_context/BarberContextProvider";
 
 export default function ServicesPage() {
-    const { services } = useBarber();
+  const { services } = useBarber();
+
   return (
     <section className="relative overflow-hidden py-20">
       {/* Background Glow */}
       <div className="absolute top-0 left-0 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
-      <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
+      <div className="absolute right-0 bottom-0 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
-        <Link
-          href="/"
-          className="absolute top-5 left-30 md:top-0 md:left-4 z-50 flex items-center gap-2 text-white hover:text-primary/80 transition-all duration-300"
-        >
-          <span>الرجوع إلي الرئيسية</span>
-          <span>
-            <FaArrowLeft />
-          </span>
-        </Link>
+        {/* Back Button */}
+        <div className="mb-10 flex justify-center md:justify-end">
+          <Link
+            href="/"
+            className="group inline-flex items-center gap-3 rounded-2xl border border-border/60 bg-card/60 px-5 py-3 text-sm font-medium backdrop-blur-md transition-all duration-300 hover:border-primary/40 hover:bg-primary/10 hover:text-primary hover:shadow-lg"
+          >
+            <span>الرجوع إلى الرئيسية</span>
+            <FaArrowLeft className="transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
+        </div>
+
         {/* Heading */}
         <div className="mx-auto mb-16 max-w-3xl text-center">
           <span className="mb-4 inline-block rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-sm text-primary">
@@ -88,7 +91,7 @@ export default function ServicesPage() {
 
                   <Link
                     href="/booking"
-                    className="rounded-xl bg-primary px-5 py-2 font-bold text-black transition-all duration-300 hover:scale-105 hover:opacity-90 z-10"
+                    className="z-10 rounded-xl bg-primary px-5 py-2 font-bold text-black transition-all duration-300 hover:scale-105 hover:opacity-90"
                   >
                     احجز الآن
                   </Link>
