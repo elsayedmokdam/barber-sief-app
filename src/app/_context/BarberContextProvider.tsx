@@ -26,14 +26,6 @@ interface BarberContextType {
 export const BarberContext = createContext({} as BarberContextType);
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-const DEFAULT_SERVICES: Service[] = [
-  { id: "1", nameAr: "حلاقة شعر", price: 50, durationMinutes: 30 },
-  { id: "2", nameAr: "حلاقة ذقن", price: 30, durationMinutes: 15 },
-  { id: "3", nameAr: "حلاقة شعر وذقن", price: 70, durationMinutes: 45 },
-  { id: "4", nameAr: "صبغة شعر", price: 100, durationMinutes: 60 },
-  { id: "5", nameAr: "تشذيب شعر", price: 40, durationMinutes: 20 },
-];
-
 export function BarberContextProvider({ children }: { children: ReactNode }) {
   const [services, setServices] = useState<Service[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -56,7 +48,7 @@ export function BarberContextProvider({ children }: { children: ReactNode }) {
 
         if (!servicesResponse.ok) {
           console.error("Failed to load services");
-          setServices(DEFAULT_SERVICES);
+          setServices([]);
         } else {
           setServices(await servicesResponse.json());
         }
@@ -82,7 +74,7 @@ export function BarberContextProvider({ children }: { children: ReactNode }) {
         }
       } catch (error) {
         console.error("Failed to fetch barber data:", error);
-        setServices(DEFAULT_SERVICES);
+        setServices([]);
         setBookings([]);
       }
     }
