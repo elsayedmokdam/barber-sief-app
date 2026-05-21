@@ -31,8 +31,3 @@ model ShopStatus {
   isOpen      Boolean
   lastUpdated DateTime
 }
-
-model OwnerStatus {
-  id      Int  @id @default(autoincrement())
-  isOwner Boolean
-}

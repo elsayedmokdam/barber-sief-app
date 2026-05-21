@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import HomeSlider from "@/components/home-slider/HomeSlider";
 import MainPage from "@/components/main-page/MainPage";

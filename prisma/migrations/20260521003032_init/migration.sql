@@ -32,10 +32,3 @@ CREATE TABLE "ShopStatus" (
     CONSTRAINT "ShopStatus_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "OwnerStatus" (
-    "id" SERIAL NOT NULL,
-    "isOwner" BOOLEAN NOT NULL,
-
-    CONSTRAINT "OwnerStatus_pkey" PRIMARY KEY ("id")
-);

@@ -1,3 +1,5 @@
+"use client";
+import { useBarber } from "@/app/_context/BarberContextProvider";
 import { motion } from "motion/react";
 import { FaCalendar, FaClock, FaReceipt, FaTrash } from "react-icons/fa6";
 import { format } from "date-fns";
@@ -8,14 +10,13 @@ export default function BookingCard({
   index,
   deleteBooking,
   setSelectedBooking,
-  isOwner,
 }: {
   booking: Booking;
   index: number;
-  deleteBooking: (id: string) => void;
+  deleteBooking?: (id: string) => void;
   setSelectedBooking: (booking: Booking | null) => void;
-  isOwner: boolean;
 }) {
+  const {isOwner} = useBarber();
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
@@ -87,7 +88,7 @@ export default function BookingCard({
             </button>
             {isOwner && (
               <button
-                onClick={() => deleteBooking(booking.id)}
+                onClick={() => deleteBooking!(booking.id)}
                 className="p-2 bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 transition-all duration-300 hover:scale-110"
                 title="حذف الحجز"
               >

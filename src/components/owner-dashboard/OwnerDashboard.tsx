@@ -167,85 +167,282 @@ export function OwnerDashboard() {
           )}
         </AnimatePresence>
 
-        <div className="space-y-2">
+        <div className="space-y-4">
           {services.map((service, index) => (
             <motion.div
               key={service.id}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className="flex items-center gap-3 p-4 bg-muted rounded-xl hover:bg-accent/40 transition-colors"
+              whileHover={{ scale: 1.01 }}
+              className="
+                group
+                rounded-3xl
+                border
+                border-border/50
+                bg-card/70
+                backdrop-blur-xl
+                p-5
+                shadow-lg
+                transition-all
+                duration-300
+                hover:border-primary/20
+                hover:shadow-2xl
+                "
             >
               {editingServiceId === service.id ? (
-                <>
-                  <input
-                    type="text"
-                    value={editedService.nameAr || ""}
-                    onChange={(e) =>
-                      setEditedService({
-                        ...editedService,
-                        nameAr: e.target.value,
-                      })
-                    }
-                    className="flex-1 px-3 py-1 bg-background border border-border rounded-lg"
-                  />
-                  <input
-                    type="number"
-                    value={editedService.price || ""}
-                    onChange={(e) =>
-                      setEditedService({
-                        ...editedService,
-                        price: Number(e.target.value),
-                      })
-                    }
-                    className="w-24 px-3 py-1 bg-background border border-border rounded-lg"
-                  />
-                  <input
-                    type="number"
-                    value={editedService.durationMinutes || ""}
-                    onChange={(e) =>
-                      setEditedService({
-                        ...editedService,
-                        durationMinutes: Number(e.target.value),
-                      })
-                    }
-                    className="w-24 px-3 py-1 bg-background border border-border rounded-lg"
-                  />
-                  <button
-                    onClick={() => handleUpdateService(service.id)}
-                    className="p-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-                  >
-                    <FaCheck className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => setEditingServiceId(null)}
-                    className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                  >
-                    <FaX className="w-4 h-4" />
-                  </button>
-                </>
-              ) : (
-                <>
-                  <div className="flex-1">
-                    <p className="font-medium">{service.nameAr}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {service.durationMinutes} دقيقة
-                    </p>
+                <div className="flex flex-col lg:flex-row gap-4">
+                  {/* Inputs */}
+                  <div className="grid flex-1 grid-cols-1 md:grid-cols-3 gap-3">
+                    {/* Service Name */}
+                    <div className="space-y-1">
+                      <label className="text-sm text-muted-foreground">
+                        اسم الخدمة
+                      </label>
+
+                      <input
+                        type="text"
+                        placeholder="مثال: حلاقة شعر"
+                        value={editedService.nameAr || ""}
+                        onChange={(e) =>
+                          setEditedService({
+                            ...editedService,
+                            nameAr: e.target.value,
+                          })
+                        }
+                        className="
+                          w-full
+                          rounded-2xl
+                          border
+                          border-border
+                          bg-background/80
+                          px-4
+                          py-3
+                          outline-none
+                          transition-all
+                          duration-300
+                          focus:border-primary
+                          focus:ring-2
+                          focus:ring-primary/20
+                          hover:border-primary/40
+                          "
+                      />
+                    </div>
+
+                    {/* Price */}
+                    <div className="space-y-1">
+                      <label className="text-sm text-muted-foreground">
+                        السعر
+                      </label>
+
+                      <div className="relative">
+                        <input
+                          type="number"
+                          placeholder="150"
+                          value={editedService.price || ""}
+                          onChange={(e) =>
+                            setEditedService({
+                              ...editedService,
+                              price: Number(e.target.value),
+                            })
+                          }
+                          className="
+                            w-full
+                            rounded-2xl
+                            border
+                            border-border
+                            bg-background/80
+                            px-4
+                            py-3
+                            pl-16
+                            outline-none
+                            transition-all
+                            duration-300
+                            focus:border-primary
+                            focus:ring-2
+                            focus:ring-primary/20
+                            hover:border-primary/40
+                            "
+                        />
+
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+                          جنيه
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Duration */}
+                    <div className="space-y-1">
+                      <label className="text-sm text-muted-foreground">
+                        المدة
+                      </label>
+
+                      <div className="relative">
+                        <input
+                          type="number"
+                          placeholder="30"
+                          value={editedService.durationMinutes || ""}
+                          onChange={(e) =>
+                            setEditedService({
+                              ...editedService,
+                              durationMinutes: Number(e.target.value),
+                            })
+                          }
+                          className="
+                            w-full
+                            rounded-2xl
+                            border
+                            border-border
+                            bg-background/80
+                            px-4
+                            py-3
+                            pl-20
+                            outline-none
+                            transition-all
+                            duration-300
+                            focus:border-primary
+                            focus:ring-2
+                            focus:ring-primary/20
+                            hover:border-primary/40
+                            "
+                        />
+
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+                          دقيقة
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <p className="font-bold text-primary">{service.price} جنيه</p>
-                  <button
-                    onClick={() => startEditing(service)}
-                    className="p-2 hover:bg-primary/10 rounded-lg transition-colors"
-                  >
-                    <RiEdit2Fill className="w-4 h-4 text-primary" />
-                  </button>
-                  <button
-                    onClick={() => void handleDeleteService(service.id)}
-                    className="p-2 hover:bg-destructive/10 rounded-lg transition-colors"
-                  >
-                    <FaTrash className="w-4 h-4 text-destructive" />
-                  </button>
-                </>
+
+                  {/* Actions */}
+                  <div className="flex items-end gap-3">
+                    {/* Save */}
+                    <button
+                      onClick={() => handleUpdateService(service.id)}
+                      className="
+                        flex
+                        h-12
+                        w-12
+                        items-center
+                        justify-center
+                        rounded-2xl
+                        bg-green-500
+                        text-white
+                        shadow-lg
+                        transition-all
+                        duration-300
+                        hover:scale-105
+                        hover:bg-green-600
+                        active:scale-95
+                        "
+                      title="حفظ"
+                    >
+                      <FaCheck className="w-4 h-4" />
+                    </button>
+
+                    {/* Cancel */}
+                    <button
+                      onClick={() => setEditingServiceId(null)}
+                      className="
+                        flex
+                        h-12
+                        w-12
+                        items-center
+                        justify-center
+                        rounded-2xl
+                        bg-red-500
+                        text-white
+                        shadow-lg
+                        transition-all
+                        duration-300
+                        hover:scale-105
+                        hover:bg-red-600
+                        active:scale-95
+                        "
+                      title="إلغاء"
+                    >
+                      <FaX className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col md:flex-row md:items-center gap-4">
+                  {/* Service Info */}
+                  <div className="flex flex-1 items-center gap-4">
+                    {/* Icon */}
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary shadow-sm">
+                      ✂️
+                    </div>
+
+                    {/* Details */}
+                    <div>
+                      <h3 className="text-lg font-bold">{service.nameAr}</h3>
+
+                      <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                        <span className="rounded-full bg-muted px-3 py-1">
+                          ⏱ {service.durationMinutes} دقيقة
+                        </span>
+
+                        <span className="rounded-full bg-primary/10 px-3 py-1 text-primary font-medium">
+                          💰 {service.price} جنيه
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center gap-3">
+                    {/* Edit */}
+                    <button
+                      onClick={() => startEditing(service)}
+                      className="
+                        flex
+                        h-11
+                        w-11
+                        items-center
+                        justify-center
+                        rounded-2xl
+                        border
+                        border-border
+                        bg-background/60
+                        transition-all
+                        duration-300
+                        hover:border-primary/30
+                        hover:bg-primary/10
+                        hover:text-primary
+                        hover:scale-105
+                        "
+                      title="تعديل"
+                    >
+                      <RiEdit2Fill className="w-4 h-4" />
+                    </button>
+
+                    {/* Delete */}
+                    <button
+                      onClick={() => void handleDeleteService(service.id)}
+                      className="
+                        flex
+                        h-11
+                        w-11
+                        items-center
+                        justify-center
+                        rounded-2xl
+                        border
+                        border-red-500/20
+                        bg-red-500/10
+                        text-red-500
+                        transition-all
+                        duration-300
+                        hover:scale-105
+                        hover:bg-red-500
+                        hover:text-white
+                        "
+                      title="حذف"
+                    >
+                      <FaTrash className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
               )}
             </motion.div>
           ))}

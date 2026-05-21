@@ -39,11 +39,10 @@ export function BarberContextProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     async function loadData() {
       try {
-        const [servicesResponse, bookingsResponse, shopResponse, ownerResponse] = await Promise.all([
+        const [servicesResponse, bookingsResponse, shopResponse] = await Promise.all([
           fetch(`${baseUrl}/api/services`),
           fetch(`${baseUrl}/api/bookings`),
           fetch(`${baseUrl}/api/shop-status`),
-          fetch(`${baseUrl}/api/owner-status`),
         ]);
 
         if (!servicesResponse.ok) {
@@ -65,13 +64,6 @@ export function BarberContextProvider({ children }: { children: ReactNode }) {
         } else {
           setShopStatusState(await shopResponse.json());
         }
-
-        if (!ownerResponse.ok) {
-          console.error("Failed to load owner status");
-        } else {
-          const ownerJson = await ownerResponse.json();
-          setIsOwnerState(ownerJson.isOwner);
-        }
       } catch (error) {
         console.error("Failed to fetch barber data:", error);
         setServices([]);
@@ -80,6 +72,9 @@ export function BarberContextProvider({ children }: { children: ReactNode }) {
     }
 
     loadData();
+
+    const storedOwner = window.localStorage.getItem("isOwner");
+    setIsOwnerState(storedOwner === "true");
   }, []);
 
   const addService = async (service: Omit<Service, "id">) => {
@@ -170,18 +165,8 @@ export function BarberContextProvider({ children }: { children: ReactNode }) {
   };
 
   const setIsOwner = async (owner: boolean) => {
-    const response = await fetch(`${baseUrl}/api/owner-status`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ isOwner: owner }),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to update owner permission");
-    }
-
-    const result = await response.json();
-    setIsOwnerState(result.isOwner);
+    window.localStorage.setItem("isOwner", owner ? "true" : "false");
+    setIsOwnerState(owner);
   };
 
   const getAvailableTimeSlots = (date: string): string[] => {

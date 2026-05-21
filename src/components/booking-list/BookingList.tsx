@@ -43,7 +43,7 @@ export function BookingsList() {
             <h2 className="mb-4">حجوزات اليوم ({todayBookings.length})</h2>
             <div className="space-y-3">
               {todayBookings.map((booking, index) => (
-                <BookingCard key={booking.id} booking={booking} index={index} setSelectedBooking={setSelectedBooking} deleteBooking={deleteBooking} isOwner={isOwner} />
+                <BookingCard key={booking.id} booking={booking} index={index} setSelectedBooking={setSelectedBooking} deleteBooking={deleteBooking}/>
               ))}
             </div>
           </motion.div>
@@ -61,7 +61,7 @@ export function BookingsList() {
             </h2>
             <div className="space-y-3">
               {upcomingBookings.map((booking, index) => (
-                <BookingCard key={booking.id} booking={booking} index={index} setSelectedBooking={setSelectedBooking} deleteBooking={deleteBooking} isOwner={isOwner} />
+                <BookingCard key={booking.id} booking={booking} index={index} setSelectedBooking={setSelectedBooking} deleteBooking={deleteBooking}/>
               ))}
             </div>
           </motion.div>
