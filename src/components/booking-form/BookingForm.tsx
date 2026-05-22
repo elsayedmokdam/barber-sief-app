@@ -201,7 +201,7 @@ export function BookingForm() {
                       {service.durationMinutes} دقيقة
                     </p>
                   </div>
-                  <p className="font-bold">{service.price} EG</p>
+                  <p className="font-bold">{service.price} جنيه</p>
                 </div>
               </button>
             ))}
@@ -230,7 +230,7 @@ export function BookingForm() {
               <p>عدد الخدمات: {selectedServices.length}</p>
               <p>المدة الإجمالية: {totalDuration} دقيقة</p>
               <p className="font-bold text-lg text-primary">
-                المبلغ الإجمالي: {totalCost} EG
+                المبلغ الإجمالي: {totalCost} جنيه
               </p>
             </div>
           </motion.div>
