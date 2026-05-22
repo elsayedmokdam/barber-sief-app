@@ -75,7 +75,7 @@ export default function BookingCard({
         <div className="flex flex-col items-end gap-2">
           <div className="text-left">
             <p className="text-2xl font-bold text-primary">
-              {booking.totalCost} EG
+              {booking.totalCost} جنيه
             </p>
           </div>
           <div className="flex gap-2">

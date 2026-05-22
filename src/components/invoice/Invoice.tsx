@@ -3,6 +3,7 @@ import { format, parse } from "date-fns";
 import { arSA } from "date-fns/locale/ar-SA";
 import { Booking } from "@/types";
 import InvoiceButtons from "../invoice-buttons/InvoiceButtons";
+import Link from "next/link";
 
 interface InvoiceProps {
   booking: Booking;
@@ -60,9 +61,13 @@ export function Invoice({ booking, onClose }: InvoiceProps) {
                 <div>
                   <p className="text-sm text-muted-foreground mb-1">التاريخ</p>
                   <p className="font-bold">
-                    {format(parse(booking.date, "yyyy-MM-dd", new Date()), "EEEE، dd MMMM yyyy", {
-                      locale: arSA,
-                    })}
+                    {format(
+                      parse(booking.date, "yyyy-MM-dd", new Date()),
+                      "EEEE، dd MMMM yyyy",
+                      {
+                        locale: arSA,
+                      },
+                    )}
                   </p>
                 </div>
                 <div>
@@ -134,13 +139,82 @@ export function Invoice({ booking, onClose }: InvoiceProps) {
                 </div>
               </div>
 
-              <div className="text-center text-sm text-muted-foreground">
-                <p className="mb-1">الدفع عند الحلاقة</p>
-                <p>شكراً لاختياركم صالوننا</p>
-                <p className="mt-4 text-xs">
-                  رقم الحجز: {booking.id} | تاريخ الإصدار:{" "}
-                  {format(new Date(booking.createdAt), "dd/MM/yyyy HH:mm")}
-                </p>
+              <div
+                className="
+                  mt-8
+                  rounded-3xl
+                  border
+                  border-border/50
+                  bg-muted/30
+                  px-5
+                  py-6
+                  text-center
+                  backdrop-blur-xl
+                  "
+              >
+                {/* Payment Badge */}
+                <div
+                  className="
+                    mb-4
+                    inline-flex
+                    items-center
+                    gap-2
+                    rounded-full
+                    bg-primary/10
+                    px-4
+                    py-2
+                    text-sm
+                    font-medium
+                    text-primary
+                    "
+                >
+                  💵 الدفع يتم داخل المحل عند الحلاقة
+                </div>
+
+                {/* Thank You */}
+                <h3 className="text-lg font-bold">
+                  شكراً لاختياركم صالوننا ✂️
+                </h3>
+
+                {/* Divider */}
+                <div className="my-5 h-px w-full bg-border/60" />
+
+                {/* Contact & Date */}
+                <div
+                  className="
+                    flex
+                    flex-col
+                    items-center
+                    justify-center
+                    gap-3
+                    text-sm
+                    text-muted-foreground
+                    md:flex-row
+                    "
+                >
+                  {/* Phone */}
+                  <Link
+                    href="tel:01069341668"
+                    className="
+                      transition-colors
+                      duration-300
+                      hover:text-primary
+                      hover:underline
+                      "
+                  >
+                    📞 01069341668
+                  </Link>
+
+                  <span className="hidden md:block">•</span>
+
+                  {/* Date */}
+                  <p>
+                    🗓 تاريخ الإصدار:
+                    <span className="mr-1 font-medium text-foreground">
+                      {format(new Date(booking.createdAt), "dd/MM/yyyy HH:mm")}
+                    </span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
