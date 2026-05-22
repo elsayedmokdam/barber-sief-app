@@ -64,7 +64,7 @@ export default function BookingCard({
             </div>
           </div>
 
-          {booking.additionalNotes && (
+          {booking.additionalNotes && isOwner && (
             <div className="text-sm text-muted-foreground bg-muted p-2 rounded-lg">
               <p className="font-medium">ملاحظات:</p>
               <p>{booking.additionalNotes}</p>
