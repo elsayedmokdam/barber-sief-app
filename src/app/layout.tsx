@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import "./globals.css";
 import React from "react";
-import image from "@/assets/images/Me5.jpeg";
+import image from "@/assets/images/seif.jpeg";
 import { cn } from "@/lib/utils";
 import { Toaster } from "react-hot-toast";
 import Navbar from "@/components/navbar/Navbar";
@@ -15,10 +15,10 @@ const cairo = Cairo({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("http://localhost:3000/"),
+  metadataBase: new URL("https://seif-hazem.vercel.app/"),
 
   title: {
-    default: "Sief Hazem ",
+    default: "Sief Hazem",
     template: "%s | Sief Hazem",
   },
 
@@ -72,9 +72,9 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Sief Hazem | Barber Shop",
     description:
-      "Sief Hazem is a professional barber shop offering top-quality haircuts and grooming services for men.",
+      "سيف حازم هو صالون حلاقة محترف يقدم قصات شعر وخدمات العناية الشخصية عالية الجودة للرجال.",
     url: "",
-    siteName: "Sief Hazem Barber Shop",
+    siteName: "صالون سيف حازم | Barber Shop",
     locale: "en_US",
     type: "website",
 
@@ -83,7 +83,7 @@ export const metadata: Metadata = {
         url: image.src,
         width: 1200,
         height: 630,
-        alt: "Sief Hazem Barber Shop",
+        alt: "صالون سيف حازم | Barber Shop",
       },
     ],
   },
@@ -92,7 +92,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Sief Hazem | Barber Shop",
     description:
-      "Sief Hazem is a professional barber shop offering top-quality haircuts and grooming services for men.",
+      "سيف حازم هو صالون حلاقة محترف يقدم قصات شعر وخدمات العناية الشخصية عالية الجودة للرجال.",
     images: [image.src],
   },
 

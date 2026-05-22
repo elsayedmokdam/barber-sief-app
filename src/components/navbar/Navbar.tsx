@@ -7,7 +7,7 @@ import { useBarber } from "@/app/_context/BarberContextProvider";
 
 export default function Navbar() {
   const { shopStatus, isOwner, setIsOwner } = useBarber();
-  const OWNER_PASSWORD = "owner123";
+  const OWNER_PASSWORD = "Saif0987654321";
 
   const handleOwnerAccess = async () => {
     try {
@@ -41,7 +41,9 @@ export default function Navbar() {
               <LuScissors className="w-6 h-6 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold">صالون الحلاقة</h1>
+              <h1 className="text-2xl font-bold">
+                سيف <span className="text-primary">VIP</span>
+              </h1>
               <div className="flex items-center gap-2">
                 <span className="relative flex h-2 w-2">
                   <span

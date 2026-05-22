@@ -40,11 +40,14 @@ export default function ImportantInfo() {
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-muted-foreground">السبت - الخميس</span>
-              <span className="font-medium">9:00 ص - 8:00 م</span>
+              <span className="font-medium">12:00 م - 2:00 ص</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">الجمعة</span>
-              <span className="font-medium">2:00 م - 8:00 م</span>
+              <span className="font-medium">2:00 م - 2:00 ص</span>
+            </div>
+            <div className="flex justify-between text-muted-foreground">
+              راجع الحالة الحالية أعلى الصفحة
             </div>
           </div>
         </motion.div>
@@ -58,7 +61,7 @@ export default function ImportantInfo() {
           <div className="text-4xl mb-3">💈</div>
           <h3 className="font-bold mb-2">خدمة احترافية</h3>
           <p className="text-sm text-muted-foreground">
-            أفضل حلاقين في المدينة بخدمة عالية الجودة
+            أفضل حلاقين في المنطقة بخدمة عالية الجودة
           </p>
         </motion.div>
       </div>
