@@ -95,7 +95,7 @@ export function BookingForm() {
         {!shopStatus.isOpen && (
           <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
             <p className="text-red-500 text-center font-medium">
-              ⚠️ المحل مغلق حالياً
+              ⚠️ المحل مغلق حالياً يمكنك الجز لغدا في الوقت المناسب لك
             </p>
           </div>
         )}
@@ -238,7 +238,6 @@ export function BookingForm() {
 
         <button
           type="submit"
-          disabled={!shopStatus.isOpen}
           className="w-full py-4 bg-primary text-primary-foreground rounded-xl font-bold text-lg hover:bg-primary/90 transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
         >
           تأكيد الحجز
