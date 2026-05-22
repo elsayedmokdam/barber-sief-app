@@ -34,6 +34,10 @@ export default function Footer() {
             <Link href="/services" className="transition hover:text-primary">
               الخدمات
             </Link>
+
+            <Link href="/gallery" className="transition hover:text-primary">
+              المعرض
+            </Link>
           </div>
         </div>
 
