@@ -56,6 +56,41 @@ export default function BookingCard({
     }
   };
 
+  const [showDeletePhoneInput, setShowDeletePhoneInput] = useState(false);
+  const [deletePhoneValue, setDeletePhoneValue] = useState("");
+  const [deleteError, setDeleteError] = useState("");
+
+  const handleDeleteClick = () => {
+    // اn owner can delete any booking
+    if (isOwner) {
+      const confirmed = window.confirm("هل أنت متأكد من حذف هذا الحجز؟");
+
+      if (confirmed) {
+        deleteBooking?.(booking.id);
+      }
+
+      return;
+    }
+
+    // The normal user is shown the phone number verification
+    setShowDeletePhoneInput(true);
+  };
+
+  const handleVerifyDelete = () => {
+    const normalizedInput = deletePhoneValue.trim();
+    const normalizedPhone = booking.phoneNumber.trim();
+
+    if (normalizedInput === normalizedPhone) {
+      deleteBooking?.(booking.id);
+
+      setDeleteError("");
+      setShowDeletePhoneInput(false);
+      setDeletePhoneValue("");
+    } else {
+      setDeleteError("رقم الهاتف غير صحيح");
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
@@ -303,6 +338,95 @@ export default function BookingCard({
               {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
             </motion.div>
           )}
+
+          {/* Delete Verification */}
+          {showDeletePhoneInput && !isOwner && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="
+                mt-4
+                rounded-2xl
+                border
+                border-red-500/20
+                bg-red-500/5
+                p-4
+                "
+            >
+              <div className="mb-3 flex items-center gap-2">
+                <FaTrash className="text-red-500" />
+
+                <p className="text-sm font-semibold">
+                  أدخل رقم الهاتف لتأكيد إلغاء الحجز
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <input
+                  type="text"
+                  value={deletePhoneValue}
+                  onChange={(e) => setDeletePhoneValue(e.target.value)}
+                  placeholder="أدخل رقم الهاتف"
+                  className="
+                    flex-1
+                    rounded-xl
+                    border
+                    border-border
+                    bg-background/80
+                    px-4
+                    py-3
+                    outline-none
+                    transition-all
+                    focus:border-red-500
+                    focus:ring-2
+                    focus:ring-red-500/20
+                    "
+                />
+
+                <button
+                  onClick={handleVerifyDelete}
+                  className="
+                    rounded-xl
+                    bg-red-500
+                    px-5
+                    py-3
+                    font-medium
+                    text-white
+                    transition-all
+                    hover:scale-[1.02]
+                    hover:bg-red-600
+                    "
+                >
+                  تأكيد الإلغاء
+                </button>
+
+                <button
+                  onClick={() => {
+                    setShowDeletePhoneInput(false);
+                    setDeletePhoneValue("");
+                    setDeleteError("");
+                  }}
+                  className="
+                    rounded-xl
+                    border
+                    border-border
+                    bg-background
+                    px-5
+                    py-3
+                    font-medium
+                    transition-all
+                    hover:bg-muted
+                    "
+                >
+                  تراجع
+                </button>
+              </div>
+
+              {deleteError && (
+                <p className="mt-2 text-sm text-red-500">{deleteError}</p>
+              )}
+            </motion.div>
+          )}
         </div>
 
         {/* RIGHT */}
@@ -341,27 +465,42 @@ export default function BookingCard({
             </button>
 
             {/* Delete */}
-            {isOwner && (
-              <button
-                onClick={() => deleteBooking?.(booking.id)}
-                className="
-                  flex
-                  items-center
-                  justify-center
-                  rounded-2xl
-                  bg-destructive
-                  p-3
-                  text-destructive-foreground
-                  shadow-lg
-                  transition-all
-                  duration-300
-                  hover:scale-110
+            <button
+              onClick={handleDeleteClick}
+              className="
+                group/delete
+                relative
+                flex
+                items-center
+                justify-center
+                overflow-hidden
+                rounded-2xl
+                bg-destructive
+                p-3
+                text-destructive-foreground
+                shadow-lg
+                transition-all
+                duration-300
+                hover:scale-110
+                hover:shadow-red-500/30
+                active:scale-95
                 "
-                title="حذف الحجز"
-              >
-                <FaTrash className="h-4 w-4" />
-              </button>
-            )}
+              title={isOwner ? "حذف الحجز" : "إلغاء الحجز"}
+            >
+              <div
+                className="
+                  absolute
+                  inset-0
+                  opacity-0
+                  transition-opacity
+                  duration-300
+                  bg-white/10
+                  group-hover/delete:opacity-100
+                  "
+              />
+
+              <FaTrash className="relative z-10 h-4 w-4" />
+            </button>
           </div>
         </div>
       </div>

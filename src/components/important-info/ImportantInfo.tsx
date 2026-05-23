@@ -1,5 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { FaPhone } from "react-icons/fa6";
 export default function ImportantInfo() {
   return (
     <div>
@@ -26,6 +28,22 @@ export default function ImportantInfo() {
             <li className="flex items-start gap-2">
               <span className="text-primary">✓</span>
               <span>احجز مسبقاً لتوفير الوقت</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-primary">✓</span>
+              <span>إذا فاتك دورك ، يمكنك تحديث الحجز</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-primary">✓</span>
+              <span>إذا حدث أي خطأ يمكنك التواصل مع المالك</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-primary">
+                <FaPhone />
+              </span>
+              <Link href="/tel:01069341668" className="underline">
+                01069341668
+              </Link>
             </li>
           </ul>
         </motion.div>
