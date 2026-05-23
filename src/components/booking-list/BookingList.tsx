@@ -44,7 +44,12 @@ export function BookingsList() {
   const { bookings, deleteBooking } = useBarber();
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
 
-  const sortedBookings = [...bookings].sort((a, b) => {
+  // Deduplicate bookings by ID to prevent duplicate cards
+  const uniqueBookings = Array.from(
+    new Map(bookings.map((booking) => [booking.id, booking])).values()
+  );
+
+  const sortedBookings = [...uniqueBookings].sort((a, b) => {
     // Sort by date first
     if (a.date !== b.date) {
       return a.date.localeCompare(b.date);
