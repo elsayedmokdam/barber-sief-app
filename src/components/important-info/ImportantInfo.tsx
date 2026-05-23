@@ -41,7 +41,7 @@ export default function ImportantInfo() {
               <span className="text-primary">
                 <FaPhone />
               </span>
-              <Link href="/tel:01069341668" className="underline">
+              <Link href="tel:01069341668" className="underline">
                 01069341668
               </Link>
             </li>
