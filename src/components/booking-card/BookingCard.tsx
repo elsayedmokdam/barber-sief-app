@@ -9,12 +9,15 @@ import {
   FaReceipt,
   FaTrash,
   FaLock,
+  FaPhone,
+  FaPhoneVolume,
 } from "react-icons/fa6";
 
 import { format } from "date-fns";
 import { arSA } from "date-fns/locale";
 
 import { Booking } from "@/types";
+import Link from "next/link";
 
 export default function BookingCard({
   booking,
@@ -202,9 +205,16 @@ export default function BookingCard({
                   text-muted-foreground
                 "
               >
-                <span>📱</span>
+                <span>
+                  <FaPhoneVolume className="text-primary" />
+                </span>
 
-                <span>{booking.phoneNumber}</span>
+                <Link
+                  href={`tel:${booking.phoneNumber}`}
+                  className="underline font-bold text-primary"
+                >
+                  {booking.phoneNumber}
+                </Link>
               </div>
             )}
           </div>
@@ -465,9 +475,10 @@ export default function BookingCard({
             </button>
 
             {/* Delete */}
-            {/* <button
-              onClick={handleDeleteClick}
-              className="
+            {isOwner && (
+              <button
+                onClick={handleDeleteClick}
+                className="
                 group/delete
                 relative
                 flex
@@ -485,10 +496,10 @@ export default function BookingCard({
                 hover:shadow-red-500/30
                 active:scale-95
                 "
-              title={isOwner ? "حذف الحجز" : "إلغاء الحجز"}
-            >
-              <div
-                className="
+                title={isOwner ? "حذف الحجز" : "إلغاء الحجز"}
+              >
+                <div
+                  className="
                   absolute
                   inset-0
                   opacity-0
@@ -497,10 +508,11 @@ export default function BookingCard({
                   bg-white/10
                   group-hover/delete:opacity-100
                   "
-              />
+                />
 
-              <FaTrash className="relative z-10 h-4 w-4" />
-            </button> */}
+                <FaTrash className="relative z-10 h-4 w-4" />
+              </button>
+            )}
           </div>
         </div>
       </div>
