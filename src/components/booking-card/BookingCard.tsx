@@ -465,7 +465,7 @@ export default function BookingCard({
             </button>
 
             {/* Delete */}
-            <button
+            {/* <button
               onClick={handleDeleteClick}
               className="
                 group/delete
@@ -500,7 +500,7 @@ export default function BookingCard({
               />
 
               <FaTrash className="relative z-10 h-4 w-4" />
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
