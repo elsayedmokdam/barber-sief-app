@@ -34,13 +34,11 @@ export default function BookingCard({
   const [error, setError] = useState("");
 
   const handleOpenInvoice = () => {
-    // لو Owner افتح الفاتورة مباشرة
     if (isOwner) {
       setSelectedBooking(booking);
       return;
     }
 
-    // لو مش Owner افتح input التحقق
     setShowPhoneInput(true);
   };
 
@@ -242,7 +240,7 @@ export default function BookingCard({
                 <FaLock className="text-primary" />
 
                 <p className="text-sm font-semibold">
-                  أدخل رقم الهاتف لعرض الفاتورة
+                  أدخل رقم الهاتف الذي قمت بالحجز به لعرض الفاتورة
                 </p>
               </div>
 
