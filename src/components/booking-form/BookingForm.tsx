@@ -238,7 +238,7 @@ export function BookingForm() {
                 bg-input-background
                 px-4
                 py-3
-                text-foreground
+                text-gray-900
                 transition-all
                 focus:ring-2
                 focus:ring-primary
@@ -269,7 +269,7 @@ export function BookingForm() {
                 bg-input-background
                 px-4
                 py-3
-                text-foreground
+                text-gray-900
                 transition-all
                 focus:ring-2
                 focus:ring-primary
@@ -300,7 +300,7 @@ export function BookingForm() {
               bg-input-background
               px-4
               py-3
-              text-foreground
+              text-gray-900
               transition-all
               focus:ring-2
               focus:ring-primary
@@ -336,7 +336,7 @@ export function BookingForm() {
                     ${
                       selectedTime === slot
                         ? "border-primary bg-primary text-white"
-                        : "border-border bg-input-background text-foreground hover:border-primary"
+                        : "border-border bg-input-background text-gray-900 hover:border-primary"
                     }
                   `}
                 >
@@ -372,7 +372,7 @@ export function BookingForm() {
                   ${
                     selectedServices.find((s) => s.id === service.id)
                       ? "scale-105 border-primary bg-primary text-white"
-                      : "border-border bg-input-background text-foreground hover:scale-[1.02] hover:border-primary"
+                      : "border-border bg-input-background text-gray-900 hover:scale-[1.02] hover:border-primary"
                   }
                 `}
               >
@@ -408,7 +408,7 @@ export function BookingForm() {
               bg-input-background
               px-4
               py-3
-              text-foreground
+              text-gray-900
               transition-all
               focus:ring-2
               focus:ring-primary
