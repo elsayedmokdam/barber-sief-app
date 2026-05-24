@@ -31,6 +31,14 @@ export default function ImportantInfo() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-primary">✓</span>
+              <span>ليلة العيد يظل الحجز حتى قبل صلاة العيد</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-primary">✓</span>
+              <span>ليلة العيد من الساعة 2 ليلا الخدمات المتاحة ستكون استشوار فقط</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-primary">✓</span>
               <span>إذا فاتك دورك ، يمكنك تحديث الحجز</span>
             </li>
             <li className="flex items-start gap-2">
