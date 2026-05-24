@@ -39,7 +39,7 @@ export function BookingForm() {
 
   // ليلة العيد
 
-  const specialDate = "2026-05-27";
+  const specialDate = "2026-05-26";
 
   const specialSlots = [
     "02:00 ص",
