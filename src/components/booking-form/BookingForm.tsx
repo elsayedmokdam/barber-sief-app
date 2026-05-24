@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "motion/react";
 import { useBarber } from "@/app/_context/BarberContextProvider";
 import { Service } from "@/types";
@@ -7,9 +8,26 @@ import { format } from "date-fns";
 import { notify } from "@/lib/helpers/alerts";
 import { FaCalendar, FaClock, FaPhone, FaUser } from "react-icons/fa6";
 
+// Converts an Arabic time slot to minutes on a continuous scale starting at noon.
+// Post-midnight ص slots get +1440 so they sort after all م (PM) slots,
+// matching the scale used in BarberContextProvider.
+const slotToMinutes = (slot: string): number => {
+  const [time, period] = slot.split(" ");
+  let [hours, minutes] = time.split(":").map(Number);
+
+  if (period === "م" && hours !== 12) hours += 12;
+  if (period === "ص" && hours === 12) hours = 0;
+
+  let total = hours * 60 + minutes;
+  // AM slots belong at the end of the shift (after midnight)
+  if (period === "ص") total += 1440;
+  return total;
+};
+
 export function BookingForm() {
-  const { services, addBooking, getAvailableTimeSlots, shopStatus } =
+  const { services, bookings, addBooking, getAvailableTimeSlots, shopStatus } =
     useBarber();
+
   const [selectedDate, setSelectedDate] = useState(
     format(new Date(), "yyyy-MM-dd"),
   );
@@ -19,12 +37,95 @@ export function BookingForm() {
   const [selectedServices, setSelectedServices] = useState<Service[]>([]);
   const [additionalNotes, setAdditionalNotes] = useState("");
 
-  const availableSlots = getAvailableTimeSlots(selectedDate);
+  // ليلة العيد
+
+  const specialDate = "2026-05-27";
+
+  const specialSlots = [
+    "02:00 ص",
+    "02:20 ص",
+    "02:40 ص",
+    "03:00 ص",
+    "03:20 ص",
+    "03:40 ص",
+    "04:00 ص",
+    "04:20 ص",
+    "04:40 ص",
+    "05:00 ص",
+    "05:20 ص",
+    "05:40 ص",
+    "06:00 ص",
+  ];
+
+  const isSpecialDate = useMemo(
+    () => selectedDate === specialDate,
+    [selectedDate],
+  );
+
+  const isSpecialTime = useMemo(
+    () => specialSlots.includes(selectedTime),
+    [selectedTime],
+  );
+
+  const availableSlots = useMemo(() => {
+    // Normal slots already have booked + past times removed by getAvailableTimeSlots
+    const normalSlots = getAvailableTimeSlots(selectedDate);
+
+    if (!isSpecialDate) {
+      return normalSlots;
+    }
+
+    // For the special date, filter special slots the same way:
+    // remove already-booked ones and remove past ones if today
+    const bookedOnDate = bookings
+      .filter((b) => b.date === selectedDate)
+      .map((b) => b.timeSlot);
+
+    const todayStr = new Date().toISOString().split("T")[0];
+    const isToday = selectedDate === todayStr;
+
+    let nowMinutes = new Date().getHours() * 60 + new Date().getMinutes();
+    if (new Date().getHours() < 12) nowMinutes += 1440;
+
+    const filteredSpecialSlots = specialSlots.filter((slot) => {
+      if (bookedOnDate.includes(slot)) return false;
+      if (isToday && slotToMinutes(slot) <= nowMinutes) return false;
+      return true;
+    });
+
+    // Merge, deduplicate, and sort chronologically
+    return [...new Set([...normalSlots, ...filteredSpecialSlots])].sort(
+      (a, b) => slotToMinutes(a) - slotToMinutes(b),
+    );
+  }, [selectedDate, bookings, isSpecialDate, getAvailableTimeSlots]);
+
+  const filteredServices = useMemo(
+    () =>
+      isSpecialDate && isSpecialTime
+        ? services.filter((service) => service.nameAr === "استشوار")
+        : services,
+    [isSpecialDate, isSpecialTime, services],
+  );
+
+  useEffect(() => {
+    if (isSpecialDate && isSpecialTime) {
+      setSelectedServices((prev) =>
+        prev.filter((service) => service.nameAr === "استشوار"),
+      );
+    }
+  }, [isSpecialDate, isSpecialTime]);
+
+  useEffect(() => {
+    if (selectedTime && !availableSlots.includes(selectedTime)) {
+      setSelectedTime("");
+    }
+  }, [selectedDate, availableSlots, selectedTime]);
 
   const totalCost = selectedServices.reduce(
     (sum, service) => sum + service.price,
     0,
   );
+
   const totalDuration = selectedServices.reduce(
     (sum, service) => sum + service.durationMinutes,
     0,
@@ -33,11 +134,8 @@ export function BookingForm() {
   const handleServiceToggle = (service: Service) => {
     setSelectedServices((prev) => {
       const exists = prev.find((s) => s.id === service.id);
-      if (exists) {
-        return prev.filter((s) => s.id !== service.id);
-      } else {
-        return [...prev, service];
-      }
+      if (exists) return prev.filter((s) => s.id !== service.id);
+      return [...prev, service];
     });
   };
 
@@ -70,9 +168,9 @@ export function BookingForm() {
         totalCost,
       });
 
-      notify.success("تم الحجز بنجاح! ✅");
+      notify.success("تم الحجز بنجاح ✅");
 
-      // Reset form
+      // Reset
       setCustomerName("");
       setPhoneNumber("");
       setSelectedTime("");
@@ -80,7 +178,7 @@ export function BookingForm() {
       setAdditionalNotes("");
     } catch (error) {
       console.error(error);
-      notify.error("فشل إنشاء الحجز. حاول مرة أخرى.");
+      notify.error("فشل إنشاء الحجز");
     }
   };
 
@@ -88,111 +186,195 @@ export function BookingForm() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-card rounded-2xl p-6 border border-border shadow-lg"
+      className="
+        rounded-2xl
+        border
+        border-border
+        bg-card
+        p-6
+        shadow-lg
+      "
     >
       <div className="mb-6">
         <h2 className="mb-2">احجز موعدك</h2>
+
         {!shopStatus.isOpen && (
-          <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
-            <p className="text-red-500 text-center font-medium">
-              ⚠️ المحل مغلق حالياً يمكنك الجز لغدا في الوقت المناسب لك
+          <div
+            className="
+              rounded-lg
+              border
+              border-red-500/20
+              bg-red-500/10
+              p-3
+            "
+          >
+            <p className="text-center font-medium text-red-500">
+              ⚠️ المحل مغلق حالياً
             </p>
           </div>
         )}
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Name and Phone */}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <label className="flex items-center gap-2 mb-2">
-              <FaUser className="w-4 h-4 text-primary" />
+            <label className="mb-2 flex items-center gap-2">
+              <FaUser className="h-4 w-4 text-primary" />
               الاسم
             </label>
+
             <input
               type="text"
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
-              className="w-full text-gray-900 px-4 py-3 bg-input-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary transition-all"
               placeholder="أدخل اسمك"
               required
+              className="
+                w-full
+                rounded-xl
+                border
+                border-border
+                bg-input-background
+                px-4
+                py-3
+                text-foreground
+                transition-all
+                focus:ring-2
+                focus:ring-primary
+                focus:outline-none
+              "
             />
           </div>
 
           <div>
-            <label className="flex items-center gap-2 mb-2">
-              <FaPhone className="w-4 h-4 text-primary" />
+            <label className="mb-2 flex items-center gap-2">
+              <FaPhone className="h-4 w-4 text-primary" />
               رقم الهاتف
             </label>
+
             <input
               type="tel"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
               pattern="^01[0125][0-9]{8}$"
-              title="يرجى ادخال رقم هاتف صحيح"
-              className="w-full text-gray-900 px-4 py-3 bg-input-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+              title="يرجى إدخال رقم صحيح"
               placeholder="01xxxxxxxxx"
               required
+              className="
+                w-full
+                rounded-xl
+                border
+                border-border
+                bg-input-background
+                px-4
+                py-3
+                text-foreground
+                transition-all
+                focus:ring-2
+                focus:ring-primary
+                focus:outline-none
+              "
             />
           </div>
         </div>
 
+        {/* Date */}
         <div>
-          <label className="flex items-center gap-2 mb-2">
-            <FaCalendar className="w-4 h-4 text-primary" />
+          <label className="mb-2 flex items-center gap-2">
+            <FaCalendar className="h-4 w-4 text-primary" />
             التاريخ
           </label>
+
           <input
             type="date"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
             min={format(new Date(), "yyyy-MM-dd")}
-            className="w-full px-4 py-3 bg-input-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary transition-all text-gray-900"
             required
+            className="
+              w-full
+              rounded-xl
+              border
+              border-border
+              bg-input-background
+              px-4
+              py-3
+              text-foreground
+              transition-all
+              focus:ring-2
+              focus:ring-primary
+              focus:outline-none
+            "
           />
         </div>
 
+        {/* The Available Slots */}
         <div>
-          <label className="flex items-center gap-2 mb-2">
-            <FaClock className="w-4 h-4 text-primary" />
+          <label className="mb-2 flex items-center gap-2">
+            <FaClock className="h-4 w-4 text-primary" />
             الوقت المتاح
           </label>
-          <div className="grid grid-cols-4 md:grid-cols-6 gap-2">
+
+          <div className="grid grid-cols-3 gap-2 md:grid-cols-6">
             {availableSlots.length > 0 ? (
               availableSlots.map((slot) => (
                 <button
                   key={slot}
                   type="button"
                   onClick={() => setSelectedTime(slot)}
-                  className={`py-2 px-3 rounded-lg border transition-all duration-300 hover:scale-105 ${
-                    selectedTime === slot
-                      ? "bg-primary text-white border-primary"
-                      : "bg-input-background border-border text-black hover:border-primary"
-                  } text-center`}
+                  className={`
+                    rounded-lg
+                    border
+                    px-3
+                    py-2
+                    text-center
+                    transition-all
+                    duration-300
+                    hover:scale-105
+
+                    ${
+                      selectedTime === slot
+                        ? "border-primary bg-primary text-white"
+                        : "border-border bg-input-background text-foreground hover:border-primary"
+                    }
+                  `}
                 >
                   {slot}
                 </button>
               ))
             ) : (
-              <p className="col-span-full text-center text-muted-foreground py-4">
-                لا توجد مواعيد متاحة في هذا اليوم
+              <p className="col-span-full py-4 text-center text-muted-foreground">
+                لا توجد مواعيد متاحة
               </p>
             )}
           </div>
         </div>
 
+        {/* Services */}
         <div>
           <label className="mb-2 block">اختر الخدمات</label>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {services.map((service) => (
+
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            {filteredServices.map((service) => (
               <button
                 key={service.id}
                 type="button"
                 onClick={() => handleServiceToggle(service)}
-                className={`p-4 rounded-xl border transition-all duration-300 text-right ${
-                  selectedServices.find((s) => s.id === service.id)
-                    ? "bg-primary text-white border-primary scale-105"
-                    : "bg-input-background border-border text-black hover:border-primary hover:scale-102"
-                }`}
+                className={`
+                  rounded-xl
+                  border
+                  p-4
+                  text-right
+                  transition-all
+                  duration-300
+
+                  ${
+                    selectedServices.find((s) => s.id === service.id)
+                      ? "scale-105 border-primary bg-primary text-white"
+                      : "border-border bg-input-background text-foreground hover:scale-[1.02] hover:border-primary"
+                  }
+                `}
               >
                 <div className="flex items-center justify-between">
                   <div>
@@ -208,37 +390,74 @@ export function BookingForm() {
           </div>
         </div>
 
+        {/* Notes */}
         <div>
-          <label className="mb-2 block">ملاحظات إضافية (اختياري)</label>
+          <label className="mb-2 block">ملاحظات إضافية</label>
+
           <textarea
             value={additionalNotes}
             onChange={(e) => setAdditionalNotes(e.target.value)}
-            className="w-full text-gray-900 px-4 py-3 bg-input-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
             rows={3}
             placeholder="أي ملاحظات أو طلبات خاصة..."
+            className="
+              w-full
+              resize-none
+              rounded-xl
+              border
+              border-border
+              bg-input-background
+              px-4
+              py-3
+              text-foreground
+              transition-all
+              focus:ring-2
+              focus:ring-primary
+              focus:outline-none
+            "
           />
         </div>
 
+        {/* Summary */}
         {selectedServices.length > 0 && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
-            className="p-4 bg-accent/50 rounded-xl border border-primary/20"
+            className="
+              rounded-xl
+              border
+              border-primary/20
+              bg-accent/50
+              p-4
+            "
           >
             <h3 className="mb-2">ملخص الحجز</h3>
+
             <div className="space-y-1 text-sm">
               <p>عدد الخدمات: {selectedServices.length}</p>
               <p>المدة الإجمالية: {totalDuration} دقيقة</p>
-              <p className="font-bold text-lg text-primary">
+              <p className="text-lg font-bold text-primary">
                 المبلغ الإجمالي: {totalCost} جنيه
               </p>
             </div>
           </motion.div>
         )}
 
+        {/* Submit button */}
         <button
           type="submit"
-          className="w-full py-4 bg-primary text-primary-foreground rounded-xl font-bold text-lg hover:bg-primary/90 transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+          className="
+            w-full
+            rounded-xl
+            bg-primary
+            py-4
+            text-lg
+            font-bold
+            text-primary-foreground
+            transition-all
+            duration-300
+            hover:scale-105
+            hover:bg-primary/90
+          "
         >
           تأكيد الحجز
         </button>

@@ -171,8 +171,6 @@ export function BarberContextProvider({ children }: { children: ReactNode }) {
 
   const getAvailableTimeSlots = (date: string): string[] => {
     const allTimeSlots = [
-      "12:00 م",
-      "12:30 م",
       "01:00 م",
       "01:30 م",
       "02:00 م",
