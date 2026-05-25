@@ -452,6 +452,8 @@ export function BookingForm() {
           disabled={selectedServices.length === 0 || isLoading}
           type="submit"
           className="
+            disabled:cursor-not-allowed
+            disabled:opacity-50
             w-full
             rounded-xl
             bg-primary
