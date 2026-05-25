@@ -10,8 +10,6 @@ import BookingCard from "../booking-card/BookingCard";
 // Ordered chronologically: noon → midnight → early morning
 // Must match the slots defined in BarberContextProvider
 const TIME_SLOT_ORDER = [
-  "12:00 م",
-  "12:30 م",
   "01:00 م",
   "01:30 م",
   "02:00 م",
@@ -19,7 +17,7 @@ const TIME_SLOT_ORDER = [
   "03:00 م",
   "03:30 م",
   "04:00 م",
-  "04:30 م",
+  // "04:30 م",  // Remove this line
   "05:00 م",
   "05:30 م",
   "06:00 م",
@@ -38,6 +36,7 @@ const TIME_SLOT_ORDER = [
   "12:30 ص",
   "01:00 ص",
   "01:30 ص",
+  "02:00 ص",
 ];
 
 export function BookingsList() {
