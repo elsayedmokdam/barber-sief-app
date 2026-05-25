@@ -350,7 +350,7 @@ export function BookingForm() {
               ))
             ) : (
               <p className="col-span-full py-4 text-center text-muted-foreground">
-                لا توجد مواعيد متاحة في هذا اليوم يمكنك الحجز في يوم اخر
+                لا توجد مواعيد متاحة في هذا اليوم يمكنك الحجز في يوم اخر أو الذهاب إلى المحل مباشرة
               </p>
             )}
           </div>
