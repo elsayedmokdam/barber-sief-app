@@ -139,7 +139,10 @@ export function BookingForm() {
     });
   };
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
     e.preventDefault();
 
     if (!shopStatus.isOpen) {
@@ -167,6 +170,8 @@ export function BookingForm() {
         additionalNotes,
         totalCost,
       });
+
+      setIsLoading(false);
 
       notify.success("تم الحجز بنجاح ✅");
 
@@ -345,7 +350,7 @@ export function BookingForm() {
               ))
             ) : (
               <p className="col-span-full py-4 text-center text-muted-foreground">
-                لا توجد مواعيد متاحة
+                لا توجد مواعيد متاحة في هذا اليوم يمكنك الحجز في يوم اخر
               </p>
             )}
           </div>
@@ -444,6 +449,7 @@ export function BookingForm() {
 
         {/* Submit button */}
         <button
+          disabled={selectedServices.length === 0 || isLoading}
           type="submit"
           className="
             w-full
