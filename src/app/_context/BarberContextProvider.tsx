@@ -195,6 +195,7 @@ export function BarberContextProvider({ children }: { children: ReactNode }) {
       "12:30 ص",
       "01:00 ص",
       "01:30 ص",
+      "02:00 ص",
     ];
 
     const bookedSlots = bookings
