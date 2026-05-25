@@ -178,7 +178,7 @@ export function BarberContextProvider({ children }: { children: ReactNode }) {
       "03:00 م",
       "03:30 م",
       "04:00 م",
-      "04:30 م",
+      
       "05:00 م",
       "05:30 م",
       "07:00 م",
